@@ -3,8 +3,8 @@
 adsr_func :: (Float,Float,Float,Float,Float,Float) -> Float -> Float
 adsr_func (numSamples,at,dt,st,rt,pos) value |pos  < at * numSamples = value * (pos /(at * numSamples)) 
                                              |pos  < (at + dt) * numSamples = value * (1 - (0.7 * (pos - at * numSamples))/(dt * numSamples))
-                                             |pos  < (at +dt + st) * numSamples = 0.3
-                                             |otherwise = (0.3 - (0.3 * (pos-(at+dt+st) * numSamples))/(rt * numSamples))
+                                             |pos  < (at +dt + st) * numSamples = value * 0.3
+                                             |otherwise = value * (0.3 - (0.3 * (pos-(at+dt+st) * numSamples))/(rt * numSamples))
 
 ---            f [samples] (numSamples)
 adsrmap :: ((Float ,Float,Float,Float,Float,Float) -> a -> b) -> [a]  -> (Float,Float,Float,Float,Float,Float) -> [b]
@@ -19,10 +19,13 @@ adsrmap_akku ((x:xs),ys,f,(numSamples,at,dt,st,rt,pos)) |pos == numSamples-1 = (
 
 
 
-adsr_modificator (at, dt, st, rt) (numSamples, ls) = reverse $ adsrmap_akku (ls, [], adsr_func, ((fromInteger numSamples),at,dt,st,rt, 0.0)) 
+adsr_modificator (at, dt, st, rt) (numSamples, ls) = reverse $ adsrmap_akku (ls, [], adsr_func, (numSamples,at,dt,st,rt, 0.0)) 
 
+adsr_wrap :: (Float,Float,Float,Float) -> [Float] -> [Float]
+adsr_wrap param (x:xs) = (x : (adsr_modificator param (x , xs))) 
 
----main = interact $ unlines . map show . gen_wave "sin" . map read . words
+main = interact $ unlines . map show . (adsr_wrap (0.1, 0.2, 0.4, 0.3)) . map read . words
+--- main = interact $ unlines . map show . gen_wave "sin" . map read . words
 --- main = unlines $ map show $ gen_wave "sin" $ map read $ words 
 --- main = interact $ unlines . map show . gen_wave "sin" . map read . words
 --- unline . map show .
