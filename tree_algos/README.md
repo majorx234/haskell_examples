@@ -4,9 +4,18 @@
 # Examples
 ## find_largest_complete_subtree
 - example tree: 
+```
+              0
+           /     \
+          1        8
+        /   \     /  \
+       2     5    9   10
+     /  \   / \
+    3   4   6  7
+```
 - in ghci load:
 ```
-:load find_largest_complete_subtree.hs
+:lqoad find_largest_complete_subtree.hs
 ```
 - add tree:
 ```
