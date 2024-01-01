@@ -132,6 +132,7 @@ inc2 a = add2 (1,a)
 
 inc3:: Int -> Int
 inc3 = add1 1
+
 -----------------------------
 -- my own datatype
 data Day = Monday
@@ -195,6 +196,35 @@ type Exception = String
 eval :: Term -> Int
 eval (Con a) = a
 eval (Div t u) = (eval t) `div` (eval u)
+
+
+-- own list implementation
+-- TODO derive from own type class
+data MyList a b = Nil | Cons a b (MyList a b)
+
+is_null :: MyList a b -> Bool
+is_null Nil = True
+is_null _ = False
+
+my_head :: MyList a b -> a
+my_head ( Cons a b _) = a
+my_head _ = error "empty list"
+
+my_tail :: MyList a b -> MyList a b
+my_tail ( Cons _ _ r) = r
+my_tail Nil = error "tail auf leerer Liste "
+
+my_concat :: (Num b) => MyList a b -> MyList a b -> MyList a b
+my_concat Nil x = x
+my_concat (Cons a b r) x = Cons a (b + 1) (my_concat r x)
+
+my_map :: (a -> c) -> MyList a b -> MyList c b
+my_map _ Nil = Nil
+my_map f ( Cons a b r) = Cons (f a) b (my_map f r)
+
+my_length :: (Num b) => MyList a b -> b
+my_length Nil = 0
+my_length (Cons a b r) = b
 
 -------------------------------------------------------
 --arrowtest
