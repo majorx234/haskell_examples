@@ -226,6 +226,17 @@ my_length :: (Num b) => MyList a b -> b
 my_length Nil = 0
 my_length (Cons a b r) = b
 
+add_my_list :: (Num b) => a -> MyList a b -> MyList a b
+add_my_list x Nil = Cons x 1 Nil
+add_my_list x (Cons a b rest) = Cons x (b + 1) (Cons a b rest)
+
+habs_my_list :: MyList a b -> (a, MyList a b)
+habs_my_list Nil = error "list empty"
+habs_my_list (Cons a b rest) = (a, rest)
+
+generate_my_list_from_list :: (Foldable t, Num b) => t a -> MyList a b
+generate_my_list_from_list ls = foldr add_my_list Nil ls
+
 -------------------------------------------------------
 --arrowtest
 --state transformers: application that involve a threading of a state throw a function
