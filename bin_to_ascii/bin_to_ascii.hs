@@ -14,6 +14,10 @@ convert_revbin_to_int2 :: String -> Int
 convert_revbin_to_int2 [] = 0
 convert_revbin_to_int2 (x : xs) = (digitToInt x) + 2 * convert_revbin_to_int2 xs
 
+convert_revbin_to_int_tailrecursion :: String -> Int -> Int
+convert_revbin_to_int_tailrecursion [] result = result
+convert_revbin_to_int_tailrecursion (x : xs) preresult = convert_revbin_to_int_tailrecursion xs (2 * preresult + (digitToInt x))
+
 convert_reverse_bin_to_int x = convert_revbin_to_int (reverse x)
 
 convert_bin_to_int_aux :: String -> Int -> Int
