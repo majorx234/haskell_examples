@@ -251,3 +251,5 @@ add_func_ST f g (s0,b) = let (s1, x) = f (s0,b)
                          in
                            let (s2, y) = g (s1,b)
                            in (s2,x+y)
+
+primes (x:xs) = x:primes[y |y <- xs, mod y x /=0]
