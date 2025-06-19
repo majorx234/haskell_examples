@@ -11,3 +11,5 @@ fibo_forward n = fibo_tail (1,2,n)
 fibo_tail :: (Integer,Integer,Integer) -> Integer
 fibo_tail (last,lastlast,3) = last
 fibo_tail (last,lastlast,n) = fibo_tail (lastlast,last+lastlast,n-1)
+
+fibs = 0:1:(zipWith (+) fibs (tail fibs))
