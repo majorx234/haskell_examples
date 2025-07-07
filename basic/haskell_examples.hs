@@ -252,4 +252,14 @@ add_func_ST f g (s0,b) = let (s1, x) = f (s0,b)
                            let (s2, y) = g (s1,b)
                            in (s2,x+y)
 
+primes :: Integral a => [a] -> [a]
 primes (x:xs) = x:primes[y |y <- xs, mod y x /=0]
+
+-- calculate avarage:
+calc_average_frum_input :: IO ()
+calc_average_frum_input = ask >> getLine >>= to_list >>= calc_average >>= print_result
+  where calc_average l = pure $ (fromIntegral $ sum l) / (lengthF l)
+        print_result n = putStrLn $ "average is:" ++ (show n)
+        ask = putStrLn "enter a list of numbers (e.g. [2,3,4])"
+        lengthF = fromIntegral . length
+        to_list :: String -> IO [Int] = pure . read
